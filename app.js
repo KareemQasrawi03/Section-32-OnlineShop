@@ -1,10 +1,11 @@
 const path = require("path");
 const express = require("express");
-const csrf = require('csurf')
+const csrf = require("csurf");
 const db = require("./data/database");
 const app = express();
 
 const addCsrfTokenMiddleware = require("./middlewares/csrf-token");
+const errorehandlerMiddelware = require("./middlewares/error-handler");
 
 const authRoutes = require("./routes/auth.routes");
 
@@ -15,12 +16,14 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 
-app.use(csrf())
+app.use(csrf());
 // Use the CSRF token middleware
-app.use(addCsrfTokenMiddleware)
+app.use(addCsrfTokenMiddleware);
 
 // Use the authentication routes as middleware to handle auth-related requests
 app.use(authRoutes);
+
+app.use(errorehandlerMiddelware);
 
 db.connectToDatabase()
   .then(function () {
