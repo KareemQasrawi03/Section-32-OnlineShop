@@ -9,6 +9,7 @@ app.set("views", path.join(__dirname, "views"));
 const authRoutes = require("./routes/auth.routes");
 
 app.use(express.static("public"));
+app.use(express.urlencoded({ extended: false }));
 
 // Use the authentication routes as middleware to handle auth-related requests
 app.use(authRoutes);
