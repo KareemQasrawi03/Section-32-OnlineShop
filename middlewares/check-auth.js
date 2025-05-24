@@ -6,6 +6,8 @@ function checkAuthStatus(req,res,next){
   // use login
   res.locals.uid = uid; //  If a user ID exists, set it in res.locals to make it available in views
   res.locals.isAuth = true; // Set a flag indicating the user is authenticated
+
+  res.locals.isAdmin = req.session.isAdmin
   next();
 }
 

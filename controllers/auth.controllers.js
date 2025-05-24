@@ -67,7 +67,7 @@ async function signup(req, res, next) {
 
   try {
     const existsAlready = user.existsAlready(); // user exists
-    if (existsAlready) {
+    if (!existsAlready) {
       sessionFlash.flashDataToSession(
         req,
         {
