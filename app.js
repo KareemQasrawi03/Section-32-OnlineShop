@@ -1,6 +1,8 @@
 const path = require("path");
 const express = require("express");
 const csrf = require("csurf");
+const expressSrssion = require("express-session")
+const createSessionConfig = require("./config/session")
 const db = require("./data/database");
 const app = express();
 
@@ -16,6 +18,8 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 
+const sessionConfig = createSessionConfig()
+app.use(expressSrssion(sessionConfig))
 app.use(csrf());
 // Use the CSRF token middleware
 app.use(addCsrfTokenMiddleware);
