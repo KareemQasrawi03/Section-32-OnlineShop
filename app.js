@@ -10,6 +10,8 @@ const addCsrfTokenMiddleware = require("./middlewares/csrf-token");
 const errorehandlerMiddelware = require("./middlewares/error-handler");
 
 const authRoutes = require("./routes/auth.routes");
+const baseRoute = require("./routes/base.route")
+const productsRoute = require("./routes/products.route")
 
 
 app.set("view engine", "ejs");
@@ -25,7 +27,9 @@ app.use(csrf());
 app.use(addCsrfTokenMiddleware);
 
 // Use the authentication routes as middleware to handle auth-related requests
+app.use(baseRoute);
 app.use(authRoutes);
+app.use(productsRoute);
 
 app.use(errorehandlerMiddelware);
 
