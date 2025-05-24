@@ -8,6 +8,7 @@ const app = express();
 
 const addCsrfTokenMiddleware = require("./middlewares/csrf-token");
 const errorehandlerMiddelware = require("./middlewares/error-handler");
+const checkAuthStatusMiddleware = require("./middlewares/check-auth")
 
 const authRoutes = require("./routes/auth.routes");
 const baseRoute = require("./routes/base.route")
@@ -25,6 +26,7 @@ app.use(expressSrssion(sessionConfig))
 app.use(csrf());
 // Use the CSRF token middleware
 app.use(addCsrfTokenMiddleware);
+app.use(checkAuthStatusMiddleware)
 
 // Use the authentication routes as middleware to handle auth-related requests
 app.use(baseRoute);

@@ -1,11 +1,13 @@
 <header>
-    <div><a href="/">WED</a></div>
-    <nav>
-        <ol>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-        </ol>
-    </nav>
+  <div><a href="/">WED</a></div>
+  <nav>
+    <ol>
+      <% if(locals.isAuth) { %>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li><button>logout</button></li>
+      <% } %>
+    </ol>
+  </nav>
 </header>
