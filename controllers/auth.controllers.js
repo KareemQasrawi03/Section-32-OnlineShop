@@ -1,10 +1,26 @@
 const User = require("../models/users.model");
 const authUtil = require("../util/authentication");
+const validation = require("../util/validtions");
 function getSignup(req, res) {
   res.render("customer/auth/signup");
 }
 
 async function signup(req, res, next) {
+  if (
+    !validation.userDetilesAreValid(
+      req.body.email,
+      req.body.password,
+      req.body.fullname,
+      req.body.street,
+      req.body.postal,
+      req.body.city
+    ) ||
+    !validation.confirmEmail(req.body.email, req.body["confirm-email"])
+  ) {
+    res.redirect("/signup");
+    return;
+  }
+
   const user = new User(
     req.body.email,
     req.body.password,
@@ -15,6 +31,12 @@ async function signup(req, res, next) {
   );
 
   try {
+      const existsAlready = user.existsAlready(); // user exists 
+      if (existsAlready) {
+        res.redirect("/signup");
+        return;
+      }
+
     await user.signup();
   } catch (error) {
     next(error);

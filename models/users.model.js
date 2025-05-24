@@ -18,6 +18,14 @@ class User {
     return database.collection("users").findOne({ email: this.email });
   }
 
+  async existsAlready(){
+    const existingUser = await this.getUserWithSameEmail()
+    if(existingUser){
+      return
+    }
+    return false
+  }
+
   async signup() {
     let database;
     const hashedPassword = await bcrypt.hash(this.password, 12);
