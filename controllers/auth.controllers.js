@@ -2,16 +2,31 @@ const User = require("../models/users.model");
 const authUtil = require("../util/authentication");
 const validation = require("../util/validtions");
 const sessionFlash = require("../util/session-flash");
-const { use } = require("../routes/auth.routes");
+
 function getSignup(req, res) {
-  res.render("customer/auth/signup");
+  let sessionData = sessionFlash.getSessionData(req); //same -> req.sesstion.flashData
+
+  if (!sessionData) {
+    sessionData = {
+      email: "",
+      confirmEmail: "",
+      password: "",
+      fullname: "",
+      street: "",
+      postal: "",
+      city: "",
+    };
+  }
+
+  res.render("customer/auth/signup", { inputData: sessionData });
 }
 
 async function signup(req, res, next) {
   const entredData = {
     email: req.body.email,
+    confirmEmail: req.body["confirm-email"],
     password: req.body.password,
-    fullanme: req.body.fullname,
+    fullname: req.body.fullname,
     street: req.body.street,
     postal: req.body.postal,
     city: req.body.city,
@@ -31,7 +46,7 @@ async function signup(req, res, next) {
       req,
       {
         errorMessege:
-          "Please Check Yor Input. Password must be at least 6 characters long, postal code must be 5 characters long",
+          "Please Check Your Input. Password must be at least 6 characters long, postal code must be 5 characters long",
         ...entredData,
       },
       function () {
@@ -76,7 +91,14 @@ async function signup(req, res, next) {
 }
 
 function getLogin(req, res) {
-  res.render("customer/auth/login");
+  let sessionData = sessionFlash.getSessionData(req);
+  if (!sessionData) {
+    sessionData = {
+      email: "",
+      password: "",
+    };
+  }
+  res.render("customer/auth/login", { inputData: sessionData });
 }
 
 async function login(req, res, next) {
@@ -91,14 +113,14 @@ async function login(req, res, next) {
   }
   const sessionErrorData = {
     errorMessege:
-      "Inviled credentiels - please double-check your enail and password!",
+      "Inviled credentiels - please double-check your email and password!",
     email: user.email,
     password: user.password,
   };
 
   if (!existingUser) {
     sessionFlash.flashDataToSession(req, sessionErrorData, function () {
-      res.redirect("/signup");
+      res.redirect("/login");
     });
     return;
   }
@@ -108,9 +130,9 @@ async function login(req, res, next) {
   );
 
   if (!passwordIsCorrect) {
-     sessionFlash.flashDataToSession(req, sessionErrorData, function () {
-       res.redirect("/signup");
-     });
+    sessionFlash.flashDataToSession(req, sessionErrorData, function () {
+      res.redirect("/login");
+    });
     return;
   }
 
