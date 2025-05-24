@@ -45,9 +45,15 @@ async function login(req, res) {
   });
 }
 
+function logout(req, res) {
+  req.session.uid = null;
+  res.redirect("/login");
+}
+
 module.exports = {
   getSignup: getSignup,
   getLogin: getLogin,
   signup: signup,
   login: login,
+  logout: logout,
 };
