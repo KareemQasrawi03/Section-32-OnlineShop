@@ -1,4 +1,5 @@
 const db = require("../data/database");
+const mongodb = require("mongodb");
 class Product {
   constructor(title, image, summary, price, description, id) {
     (this.title = title),
@@ -9,6 +10,27 @@ class Product {
     (this.imagePath = `product-data/images/${image}`),
       (this.imageUrl = `/products/assets/images/${image}`);
     this.id = id ? id.toString() : null;
+  }
+  static async findById(productId) {
+    let prodId;
+    let database;
+    try {
+      prodId = new mongodb.ObjectId(productId);
+    } catch (error) {
+      error.code = 404;
+      throw error;
+    }
+
+    database = await db.getDb();
+    const product = await database
+      .collection("products")
+      .findOne({ _id: prodId });
+    if (!product) {
+      const error = new Error("Could not find product with provided id.");
+      error.code = 404;
+      throw error;
+    }
+    return product;
   }
 
   static async findAll() {
