@@ -1,15 +1,22 @@
-const Peoducts = require("../models/product.model");
+const Product = require("../models/product.model");
 
-function getProducts(req,res) {
-    res.render("admin/products/all-products.ejs")
+async function getProducts(req, res, next) {
+  try {
+    const products = await Product.findAll();
+    console.log(products);
+    res.render("admin/products/all-products.ejs", { products: products });
+  } catch (err) {
+    next(err);
+    return;
+  }
 }
 
-function getNewProducts(req,res) {
-    res.render("admin/products/new-products.ejs");
+function getNewProducts(req, res) {
+  res.render("admin/products/new-products.ejs");
 }
 
 async function createNewProduct(req, res, next) {
-  const product = new Peoducts(
+  const product = new Product(
     req.body.title,
     req.file.filename,
     req.body.summary,
@@ -21,14 +28,14 @@ async function createNewProduct(req, res, next) {
     await product.save(); // save the product to the database
   } catch (error) {
     next(error);
-    return
+    return;
   }
 
-    res.redirect("/admin/products")
+  res.redirect("/admin/products");
 }
 
 module.exports = {
   getProducts: getProducts,
-  getNewProducts:getNewProducts,
-  createNewProduct:createNewProduct
+  getNewProducts: getNewProducts,
+  createNewProduct: createNewProduct,
 };

@@ -10,6 +10,13 @@
             <p><a href="/admin/products/new" class="btn">Add Products</a></p>
         </section>
         <section>
-        <p>A list of Products...</p></section>
+        <ul>
+            <% for(let product of products) {%>
+            <li>
+                <%- include("inclouds/product-item.ejs",{product:product}) %>
+            </li>
+            <% } %>
+        </ul>
+    </section>
     </main>
     <%- include('../../shared/includes/footer.ejs') %>

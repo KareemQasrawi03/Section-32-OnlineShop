@@ -1,13 +1,32 @@
 const db = require("../data/database");
 class Product {
-  constructor(title, image, summary, price, description) {
+  constructor(title, image, summary, price, description, id) {
     (this.title = title),
       (this.image = image), //the name of the image file
       (this.summary = summary),
       (this.price = +price), // convert string to number
       (this.description = description);
     (this.imagePath = `product-data/images/${image}`),
-      (this.imgeUrl = `products/assets/images/${image}`);
+      (this.imageUrl = `/products/assets/images/${image}`);
+    this.id = id ? id.toString() : null;
+  }
+
+  static async findAll() {
+    const database = await db.getDb();
+    const products = await database.collection("products").find().toArray();
+    console.log(products);
+
+    // Map the database documents to Product instances
+    return products.map(function (productDocument) {
+      return new Product(
+        productDocument.title,
+        productDocument.image,
+        productDocument.summary,
+        productDocument.price,
+        productDocument.description,
+        productDocument._id
+      );
+    });
   }
 
   async save() {
