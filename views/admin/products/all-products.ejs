@@ -1,4 +1,5 @@
 <%- include('../../shared/includes/head.ejs',{pageTitle:'All Products'})  %>
+<link href="/styles/products.css" rel="stylesheet">
 
 </head>
 <body>
@@ -10,7 +11,7 @@
             <p><a href="/admin/products/new" class="btn">Add Products</a></p>
         </section>
         <section>
-        <ul>
+        <ul id="product-grid">
             <% for(let product of products) {%>
             <li>
                 <%- include("inclouds/product-item.ejs",{product:product}) %>
