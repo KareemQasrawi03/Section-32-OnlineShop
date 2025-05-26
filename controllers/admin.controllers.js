@@ -34,7 +34,7 @@ async function createNewProduct(req, res, next) {
   res.redirect("/admin/products");
 }
 
-async function getUpdateProduct(req, res) {
+async function getUpdateProduct(req, res, next) {
   try {
     const product = await Product.findById(req.params.id);
     res.render("admin/products/update-product.ejs", { product: product });
@@ -44,7 +44,28 @@ async function getUpdateProduct(req, res) {
   }
 }
 
-function updateProduct() {}
+async function updateProduct(req, res, next) {
+  try {
+    const product = new Product(
+      req.body.title,
+      req.file ? req.file.filename : null,
+      req.body.summary,
+      req.body.price,
+      req.body.description,
+      req.params.id // Pass the ID from the route parameter
+    );
+
+    if (req.file) {
+      product.replaceImage(req.file.filename); // Replace the old image with the new one
+    }
+
+    await product.save();
+    res.redirect("/admin/products");
+  } catch (error) {
+    console.error("Error updating product:", error);
+    next(error);
+  }
+}
 
 module.exports = {
   getProducts: getProducts,
