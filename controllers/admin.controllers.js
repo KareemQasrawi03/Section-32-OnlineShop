@@ -74,6 +74,7 @@ async function deleteProduct(req, res, next) {
     console.log(product)
     await product.remove(); 
     res.redirect("/admin/products"); 
+    // res.json({message:"Delete Product!"})
   } catch (error) {
     next(error); 
   }
