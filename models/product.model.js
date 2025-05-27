@@ -29,7 +29,15 @@ class Product {
       error.code = 404;
       throw error;
     }
-    return product;
+    // Map the database object to a Product instance
+    return new Product(
+      product.title,
+      product.image,
+      product.summary,
+      product.price,
+      product.description,
+      product._id
+    );
   }
 
   static async findAll() {
@@ -89,6 +97,12 @@ class Product {
   replaceImage(newImage) {
     this.image = newImage; 
     this.updateImageData();
+  }
+
+  async remove() {
+    const prodId = new mongodb.ObjectId(this.id);
+    const database = await db.getDb();
+    await database.collection("products").deleteOne({ _id: prodId });
   }
 }
 

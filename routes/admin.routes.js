@@ -21,4 +21,6 @@ router.post(
   adminController.updateProduct
 );
 
+router.post("/productss/:id", adminController.deleteProduct);
+
 module.exports = router;

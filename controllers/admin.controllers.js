@@ -67,10 +67,23 @@ async function updateProduct(req, res, next) {
   }
 }
 
+async function deleteProduct(req, res, next) {
+  console.log(req.params.id)
+  try {
+    let product = await Product.findById(req.params.id);
+    console.log(product)
+    await product.remove(); 
+    res.redirect("/admin/products"); 
+  } catch (error) {
+    next(error); 
+  }
+}
+
 module.exports = {
   getProducts: getProducts,
   getNewProducts: getNewProducts,
   createNewProduct: createNewProduct,
   getUpdateProduct: getUpdateProduct,
   updateProduct: updateProduct,
+  deleteProduct: deleteProduct,
 };
