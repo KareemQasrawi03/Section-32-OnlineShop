@@ -9,6 +9,21 @@ label {
   margin-bottom: var(--space-2);
 }
 
+#image-uploud-control {
+  display: flex;
+  align-items: center;
+}
+#image-uploud-control input {
+  max-width: 15rem;
+}
+#image-uploud-control img {
+  display: none;
+  width: 4rem;
+  height: 4rem;
+  object-fit: cover;
+  border-radius: var(--border-radius-small);
+}
+
 input,
 textarea {
   font: inherit;
