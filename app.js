@@ -16,6 +16,7 @@ const authRoutes = require("./routes/auth.routes");
 const baseRoute = require("./routes/base.route")
 const productsRoute = require("./routes/products.route")
 const adminRoutes = require("./routes/admin.routes")
+const cartRouter = require("./routes/cart.routes")
 
 
 app.set("view engine", "ejs");
@@ -27,6 +28,7 @@ app.use(
   express.static("product-data")
 );
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json())
 
 const sessionConfig = createSessionConfig()
 app.use(expressSrssion(sessionConfig))
@@ -41,6 +43,7 @@ app.use(checkAuthStatusMiddleware)
 app.use(baseRoute);
 app.use(authRoutes);
 app.use(productsRoute);
+app.use("/cart", cartRouter);
 app.use(protectRoutesMiddleware);
 app.use('/admin',adminRoutes)
 

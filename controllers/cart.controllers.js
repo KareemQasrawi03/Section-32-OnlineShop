@@ -12,8 +12,8 @@ async function addCartItem(req, res, next) {
 //   req.session.save()
   res.status(201).json({
     message:"Cart Updated!",
-    newTotaleItems : cart.totalQuantity
-  })
+    newTotalItems : res.locals.cart.totalQuantity
+  });
 }
 
 module.exports = {
