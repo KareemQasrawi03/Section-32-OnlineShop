@@ -35,20 +35,32 @@
 // module.exports = Cart;
 
 class Cart {
-  constructor(items = []) {
-    this.items = items;
-    this.totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0); // Calculate total quantity
+  constructor(items = [], totalQuantity = 0, totalPrice = 0) {
+    this.items = items; // Array of cart items
+    this.totalQuantity = totalQuantity; // Total quantity of all items in the cart
+    this.totalPrice = totalPrice; // Total price of all items in the cart
+
+    if (items.length > 0) {
+      this.totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
+      this.totalPrice = items.reduce((sum, item) => sum + item.totalPrice, 0);
+    }
   }
   addItem(product) {
     const existingItem = this.items.find(
-      (item) => item.productId === product.id
+      (item) => item.product.id === product.id
     );
     if (existingItem) {
       existingItem.quantity++;
+      existingItem.totalPrice += product.price;
     } else {
-      this.items.push({ productId: product.id, quantity: 1 });
+      this.items.push({
+        product: product,
+        quantity: 1,
+        totalPrice: product.price,
+      });
     }
     this.totalQuantity++;
+    this.totalPrice += product.price;
   }
 }
 
