@@ -17,6 +17,7 @@ const baseRoute = require("./routes/base.route")
 const productsRoute = require("./routes/products.route")
 const adminRoutes = require("./routes/admin.routes")
 const cartRouter = require("./routes/cart.routes")
+const ordersRouter = require("./routes/orders.routes")
 
 
 app.set("view engine", "ejs");
@@ -45,6 +46,7 @@ app.use(authRoutes);
 app.use(productsRoute);
 app.use("/cart", cartRouter);
 app.use(protectRoutesMiddleware);
+app.use("/orders", ordersRouter);
 app.use('/admin',adminRoutes)
 
 app.use(errorehandlerMiddelware);
