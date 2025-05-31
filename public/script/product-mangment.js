@@ -7,8 +7,6 @@ async function deleteProduct(event) {
   const productId = buttonElement.dataset.productId; // Retrieve productId
   const csrfToken = buttonElement.dataset.csrf;
 
-  console.log("Product ID:", productId); // Debugging
-
   if (!productId) {
     alert("Product ID is missing!");
     return;

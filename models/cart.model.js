@@ -62,6 +62,32 @@ class Cart {
     this.totalQuantity++;
     this.totalPrice += product.price;
   }
+
+  updateItem(productId, newQuantity) {
+    const existingItemIndex = this.items.findIndex(
+      (item) => item.product.id === productId
+    );
+
+    if (existingItemIndex === -1) {
+      return;
+    }
+    const existingItem = this.items[existingItemIndex];
+
+    if (newQuantity > 0) {
+      const quantityDifference = newQuantity - existingItem.quantity;
+      existingItem.quantity = newQuantity;
+      existingItem.totalPrice = existingItem.product.price * newQuantity;
+
+      this.totalQuantity += quantityDifference;
+      this.totalPrice += quantityDifference * existingItem.product.price;
+    } 
+    else {
+      this.items.splice(existingItemIndex, 1);
+
+      this.totalQuantity -= existingItem.quantity;
+      this.totalPrice -= existingItem.totalPrice;
+    }
+  }
 }
 
 module.exports = Cart;

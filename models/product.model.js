@@ -43,7 +43,7 @@ class Product {
   static async findAll() {
     const database = await db.getDb();
     const products = await database.collection("products").find().toArray();
-    console.log(products);
+    // console.log(products);
 
     // Map the database documents to Product instances
     return products.map(function (productDocument) {

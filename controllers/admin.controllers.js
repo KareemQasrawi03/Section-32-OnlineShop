@@ -3,7 +3,7 @@ const Product = require("../models/product.model");
 async function getProducts(req, res, next) {
   try {
     const products = await Product.findAll();
-    console.log(products);
+    // console.log(products);
     res.render("admin/products/all-products.ejs", { products: products });
   } catch (err) {
     next(err);
@@ -68,10 +68,10 @@ async function updateProduct(req, res, next) {
 }
 
 async function deleteProduct(req, res, next) {
-  console.log(req.params.id)
+  // console.log(req.params.id)
   try {
     let product = await Product.findById(req.params.id);
-    console.log(product)
+    // console.log(product)
     await product.remove(); 
     res.redirect("/admin/products"); 
     // res.json({message:"Delete Product!"})
