@@ -1,10 +1,10 @@
 <%- include('../../shared/includes/head.ejs',{pageTitle:'All your Orders'})  %>
-
+<link href="/styles/orders.css" rel="stylesheet">
 </head>
 <body>
     <%- include("../../shared/includes/header.ejs") %>
     <main>
         <h1>All Your Orders</h1>
-
+        <%- include('../../shared/includes/order-list.ejs') %>
     </main>
     <%- include('../../shared/includes/footer.ejs') %>
