@@ -8,10 +8,10 @@ async function updateCartItem(event) {
   const prodId = form.dataset.productid;
   const csrfToken = form.dataset.csrf;
   const newQuantity = parseInt(form.querySelector("input").value, 10);
-  if (newQuantity <= 0) {
-    alert("Please enter a valid quantity greater than 0.");
-    return;
-  }
+  // if (newQuantity <= 0) {
+  //   alert("Please enter a valid quantity greater than 0.");
+  //   return;
+  // }
 
   try {
     const response = await fetch("/cart/items", {
@@ -32,11 +32,15 @@ async function updateCartItem(event) {
 
     const responseData = await response.json();
 
+    if (newQuantity === 0) {
+      form.parentElement.parentElement.remove();
+    } else {
     const cartItemTotalPriceElement =
       form.parentElement.querySelector(".cart-item-price");
     cartItemTotalPriceElement.textContent = `${responseData.updatedCartItem.totalPrice.toFixed(
       2
     )}`;
+    }
 
     const cartTotalPriceElement = document.getElementById("cart-total-price");
     cartTotalPriceElement.textContent = `${responseData.newTotalPrice.toFixed(
