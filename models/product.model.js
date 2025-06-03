@@ -57,6 +57,21 @@ class Product {
       );
     });
   }
+  static async findMultiple(ids) {
+    const productIds = ids.map(function (id) {
+      return new mongodb.ObjectId(id);
+    });
+    let database = await db.getDb()
+
+    const products = await database
+      .collection("products")
+      .find({ _id: { $in: productIds } })
+      .toArray();
+
+    return products.map(function (productDocument) {
+      return new Product(productDocument);
+    });
+  }
 
   updateImageData() {
     (this.imagePath = `product-data/images/${this.image}`),
@@ -85,7 +100,7 @@ class Product {
         .collection("products")
         .updateOne({ _id: prodId }, { $set: productData });
 
-      return updateResult; 
+      return updateResult;
     } else {
       // Insert new product
       const insertResult = await database
@@ -95,7 +110,7 @@ class Product {
     }
   }
   replaceImage(newImage) {
-    this.image = newImage; 
+    this.image = newImage;
     this.updateImageData();
   }
 
